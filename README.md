@@ -290,7 +290,7 @@ Ensure `~/.local/bin/watch_apps.sh` is executable and `fswatch` is installed. Th
 
 ## Credits
 
-This configuration is based on and heavily inspired by [yahr-quickshell](https://github.com/bgibson72/yahr-quickshell) by [bgibson72](https://github.com/bgibson72) — **YAHR** (Yet Another Hyprland Rice). The Quickshell widget system, theme-switching architecture, and overall desktop environment structure originate from that project.
+This configuration is based on [yahr-quickshell](https://github.com/bgibson72/yahr-quickshell) by [bgibson72](https://github.com/bgibson72) — **YAHR** (Yet Another Hyprland Rice). The Quickshell widget system, theme-switching architecture, and overall desktop environment structure originate from that project.
 
 - [bgibson72](https://github.com/bgibson72) — original [yahr-quickshell](https://github.com/bgibson72/yahr-quickshell) project, the foundation this configuration builds upon
 - [Quickshell](https://quickshell.outfoxxed.me/) — the shell framework powering the bar and widgets
