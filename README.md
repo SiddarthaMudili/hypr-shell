@@ -1,6 +1,6 @@
 # HyprShell — Hyprland + Quickshell Dotfiles
 
-A complete, opinionated Hyprland desktop environment built on top of [Quickshell](https://quickshell.outfoxxed.me/). Includes a unified theme system that syncs colours across every application simultaneously, 14 built-in colour schemes, a custom bar, app launcher, calendar, power menu, wallpaper picker, and more.
+A complete, opinionated Hyprland desktop environment built on top of yahr-quickshell. Includes a unified theme system that syncs colours across every application simultaneously, 14 built-in colour schemes, a custom bar, app launcher, calendar, power menu, wallpaper picker, and more.
 
 > **Distro:** Arch Linux (or derivatives) only. The installer uses `pacman`/`yay`/`paru`.
 
