@@ -1,0 +1,41 @@
+# Starship Prompt Configuration
+# Auto-synced with Quickshell Theme: Gruvbox
+
+format = """[](bg:#a6e3a1 fg:#1e1e2e)[󰣇 ](bg:#1e1e2e fg:#a6e3a1)[](fg:#1e1e2e bg:#313244)$time[](fg:#313244 bg:#1e1e2e)$directory[](fg:#1e1e2e bg:#1e1e2e)$git_branch$git_status$git_metrics[](fg:#1e1e2e bg:#a6e3a1)$character"""
+
+[directory]
+format = "[  $path ]($style)"
+style = "fg:#a6e3a1 bg:#1e1e2e"
+
+[git_branch]
+format = '[ $symbol$branch(:$remote_branch) ]($style)'
+symbol = "  "
+style = "fg:#a6e3a1 bg:#1e1e2e"
+
+[git_status]
+format = '[$all_status]($style)'
+style = "fg:#a6e3a1 bg:#1e1e2e"
+
+[git_metrics]
+format = "([+$added]($added_style))[]($added_style)"
+added_style = "fg:#a6e3a1 bg:#1e1e2e"
+deleted_style = "fg:#a6e3a1 bg:#1e1e2e"
+disabled = false
+
+[hg_branch]
+format = "[ $symbol$branch ]($style)"
+symbol = " "
+
+[cmd_duration]
+format = "[ 󱎫 $duration ]($style)"
+style = "fg:#89b4fa bg:#313244"
+
+[character]
+success_symbol = '[ ➜](bold #1e1e2e) '
+error_symbol = '[ ✗](bold red) '
+
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:#313244"
+format = '[[ 󱑍 $time ](bg:#313244 fg:#89b4fa)]($style)'

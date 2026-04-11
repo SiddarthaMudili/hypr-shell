@@ -1,0 +1,29 @@
+# VS Code application data (logs, caches, crash reports)
+Code/
+Code - OSS/
+
+# YouTube Music Desktop app data
+YouTube Music Desktop App/
+
+# Live dotfiles at repo root (canonical versions live in dotfiles/)
+.zshrc
+.zprofile
+
+# Quickshell generated/runtime files
+quickshell/settings.json
+quickshell/last-wallpaper
+quickshell/ThemeManager.qml
+
+# Backup files created by sync scripts
+**/*.backup
+
+# Hyprland runtime/generated files
+hypr/nvidia.conf
+
+# Font cache
+.cache/
+
+# General
+*.log
+*.tmp
+.DS_Store

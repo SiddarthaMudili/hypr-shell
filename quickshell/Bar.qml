@@ -1,0 +1,181 @@
+import QtQuick
+import QtQuick.Layouts
+import Quickshell
+import Quickshell.Io
+import QtQuick.Effects
+
+Item {
+    id: bar
+    
+    property string backgroundStyle: "translucent"  // "opaque", "translucent", or "transparent"
+    property bool enableBlur: false
+    property string position: "top"  // "top" or "bottom"
+    property real barOpacity: 0.70  // Dynamic opacity value from settings
+    property bool showBorder: false
+    property bool floating: false
+    
+    signal toggleClipboard()
+    signal toggleControlCenter()
+    
+    // Load bar settings
+    Process {
+        id: barSettingsLoader
+        running: false
+        command: ["cat", Quickshell.env("HOME") + "/.config/quickshell/settings.json"]
+        
+        property string buffer: ""
+        
+        stdout: SplitParser {
+            onRead: data => {
+                barSettingsLoader.buffer += data
+            }
+        }
+        
+        onRunningChanged: {
+            if (!running && buffer !== "") {
+                try {
+                    const settings = JSON.parse(buffer)
+                    if (settings.bar) {
+                        if (settings.bar.backgroundStyle !== undefined) {
+                            bar.backgroundStyle = settings.bar.backgroundStyle
+                        }
+                        if (settings.bar.position !== undefined) {
+                            bar.position = settings.bar.position
+                        }
+                        if (settings.bar.barOpacity !== undefined) {
+                            bar.barOpacity = settings.bar.barOpacity
+                        }
+                        if (settings.bar.showBorder !== undefined) {
+                            bar.showBorder = settings.bar.showBorder
+                        }
+                        if (settings.bar.floating !== undefined) {
+                            bar.floating = settings.bar.floating
+                        }
+                    }
+                    if (settings.general && settings.general.enableBlur !== undefined) {
+                        bar.enableBlur = settings.general.enableBlur
+                    }
+                } catch (e) {
+                    console.log("🎨 Error parsing bar settings:", e)
+                }
+                buffer = ""
+            } else if (running) {
+                buffer = ""
+            }
+        }
+    }
+    
+    // Auto-reload settings every second - delayed start for performance
+    Timer {
+        id: barSettingsTimer
+        interval: 1000
+        running: false  // Don't start immediately
+        repeat: true
+        onTriggered: {
+            barSettingsLoader.running = true
+        }
+    }
+    
+    // Delayed initial settings load
+    Component.onCompleted: {
+        // Wait 500ms before starting settings polling
+        Qt.callLater(() => {
+            barSettingsLoader.running = true
+            barSettingsTimer.running = true
+        })
+    }
+    
+    // Background rectangle – glass style
+    Rectangle {
+        id: background
+        anchors.fill: parent
+        color: {
+            if (bar.backgroundStyle === "transparent") return "transparent"
+            if (bar.backgroundStyle === "opaque") return ThemeManager.bgBase
+            return Qt.rgba(ThemeManager.bgBase.r, ThemeManager.bgBase.g, ThemeManager.bgBase.b, bar.barOpacity)
+        }
+        radius: bar.floating ? 6 : 0
+        border.width: bar.showBorder ? 1 : 0
+        border.color: Qt.rgba(ThemeManager.accentBlue.r, ThemeManager.accentBlue.g, ThemeManager.accentBlue.b, 0.35)
+        z: -1
+
+        Behavior on radius { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
+        Behavior on border.width { NumberAnimation { duration: 150 } }
+
+        // Bottom edge accent line — only when docked without a full border
+        Rectangle {
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: 1
+            color: Qt.rgba(ThemeManager.accentBlue.r, ThemeManager.accentBlue.g, ThemeManager.accentBlue.b, 0.35)
+            visible: !bar.showBorder && !bar.floating
+        }
+
+        // Top specular highlight — only when no border is shown
+        Rectangle {
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: 1
+            color: Qt.rgba(1, 1, 1, 0.10)
+            visible: !bar.showBorder
+        }
+    }
+    
+    property alias clockComponent: clockComponent
+    property alias archComponent: archComponent
+    property alias powerComponent: powerComponent
+    property alias settingsButtonComponent: quickAccessDrawer.settingsButton
+    
+    // LEFT SECTION
+    RowLayout {
+        anchors.left: parent.left
+        anchors.leftMargin: 8
+        anchors.verticalCenter: parent.verticalCenter
+        spacing: 8
+        
+        ArchButton {
+            id: archComponent
+        }
+        WorkspaceBar {}
+        Separator {}
+        QuickAccessDrawer {
+            id: quickAccessDrawer
+        }
+    }
+    
+    // CENTER SECTION - Absolutely centered
+    Clock {
+        id: clockComponent
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+    }
+
+    
+    // RIGHT SECTION
+    Item {
+        anchors.right: parent.right
+        anchors.rightMargin: -2
+        anchors.verticalCenter: parent.verticalCenter
+        height: parent.height
+        width: rightRow.width
+        
+        Row {
+            id: rightRow
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 8
+            
+            AppTray {}
+            TrayDrawer {
+                id: trayDrawerComponent
+                onToggleClipboard: bar.toggleClipboard()
+                onToggleControlCenter: bar.toggleControlCenter()
+            }
+            PowerButton {
+                id: powerComponent
+            }
+        }
+    }
+}
