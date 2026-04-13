@@ -1,6 +1,6 @@
 # HyprShell — Hyprland + Quickshell Dotfiles
 
-A complete, Hyprland desktop iterated from yahr-quickshell. Includes a unified theme system that syncs colours across every application simultaneously, 14 built-in colour schemes, a custom bar, app launcher, calendar, power menu, wallpaper picker, and more.
+A complete, Opinionated Hyprland desktop iterated from yahr-quickshell. Includes a unified theme system that syncs colours across every application simultaneously, 14 built-in colour schemes, a custom bar, app launcher, calendar, power menu, wallpaper picker, and more.
 
 > **Distro:** Arch Linux (or derivatives) only. The installer uses `pacman`/`yay`/`paru`.
 
